@@ -2,19 +2,19 @@ import {Dispatch} from 'redux'
 import {filmsApi, FilmType, ResFilmsType} from "../api/api";
 
 const initialState: ResFilmsType = {
-    films: []
+  films: []
 }
 
 export const filmsReducer = (state: ResFilmsType = initialState, action: ActionsType): ResFilmsType => {
-    switch (action.type) {
-        case "SET-FILMS":
-            return {
-                ...state,
-                films: action.films
-            }
-        default:
-            return state
-    }
+  switch (action.type) {
+    case "SET-FILMS":
+      return {
+        ...state,
+        films: action.films
+      }
+    default:
+      return state
+  }
 }
 
 // actions
@@ -23,15 +23,27 @@ export const setFilmsAC = (films: Array<FilmType>) => ({type: 'SET-FILMS', films
 
 // thunks
 export const setFilmsTC = () => {
-    return (dispatch: ThunkDispatch) => {
-        filmsApi.getFilms()
-            .then((res) => {
-                dispatch(setFilmsAC(res.data.results))
-            })
-            .catch(error => {
-                console.log(error, dispatch);
-            })
-    }
+  return (dispatch: ThunkDispatch) => {
+    filmsApi.getFilms()
+      .then((res) => {
+        dispatch(setFilmsAC(res.data.results))
+      })
+      .catch(error => {
+        console.log(error, dispatch);
+      })
+  }
+}
+
+export const setFilteredFilmsTC = (e: string) => {
+  return (dispatch: ThunkDispatch) => {
+    filmsApi.getFilteredEpisodes(e)
+      .then((res) => {
+        dispatch(setFilmsAC(res.data.results))
+      })
+      .catch(error => {
+        console.log(error, dispatch);
+      })
+  }
 }
 
 // types
